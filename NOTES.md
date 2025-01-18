@@ -77,6 +77,20 @@ projeto-agendamento/
    npx tailwindcss init
    ```
 
-Essa estrutura facilita o desenvolvimento, porque você pode trabalhar no backend e no frontend de forma independente. Quando precisar integrar os dois, pode usar APIs REST ou GraphQL no backend para o frontend consumir. 🚀 
+## codes
 
-Se precisar de ajuda para configurar algo mais detalhado, é só pedir!
+``` py
+from django.db import models
+
+class Appointment(models.Model):
+    customer_name = models.CharField(max_length=100)  # Nome do cliente
+    service = models.CharField(max_length=100)  # Serviço solicitado
+    date = models.DateField()  # Data do agendamento
+    time = models.TimeField()  # Hora do agendamento
+    notes = models.TextField(blank=True, null=True)  # Observações adicionais
+
+    def __str__(self):
+        return f"{self.customer_name} - {self.service} ({self.date} {self.time})"
+
+```
+
