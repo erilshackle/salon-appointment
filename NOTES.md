@@ -19,7 +19,6 @@
 
 ##### frontend
 
-- npm install
 - npx create-next-app@latest frontend
 - npm install -D tailwindcss postcss autoprefixer
 - npx tailwindcss init
