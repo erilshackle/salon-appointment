@@ -4,10 +4,11 @@
 
 - python -m venv venv
 - venv\Scripts\activate
-- pip install django mysqlclient
+- django-admin startproject salon
+- pip install django
+- pip install mysqlclient djangorestframework django-cors-headers
 - python -m pip install --upgrade pip
 - python manage.py migrate
-- pip install djangorestframework
 - add to *settings.py*
 ``` bash
     INSTALLED_APPS = [
