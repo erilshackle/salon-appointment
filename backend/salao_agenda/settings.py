@@ -84,10 +84,10 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'salonAgenda',
+#         'NAME': 'salon_agenda',
 #         'USER': 'root',
 #         'PASSWORD': '',
-#         'HOST': 'localhost',  # Ou o endereço do servidor MySQL
+#         'HOST': 'localhost',
 #         'PORT': '3306',
 #     }
 # }
