@@ -6,9 +6,9 @@ class Servico(models.Model):
     preco = models.DecimalField(max_digits=10, decimal_places=2)  # Preço do serviço
 
     def __str__(self):
-        return f"{self.nome} - R${self.preco}"
+        return f"{self.nome} - {self.preco}$"
 
-class HorarioAtendimento(models.Model):
+class HorarioDeAtendimento(models.Model):
     dia_semana = models.CharField(max_length=9)  # Exemplo: "Segunda-feira"
     hora_inicio = models.TimeField()  # Horário de início do expediente
     hora_fim = models.TimeField()  # Horário de fim do expediente
