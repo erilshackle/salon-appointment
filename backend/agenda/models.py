@@ -4,9 +4,12 @@ from django.core.exceptions import ValidationError
 class Servico(models.Model):
     nome = models.CharField(max_length=100)  # Nome do serviço
     preco = models.DecimalField(max_digits=10, decimal_places=2)  # Preço do serviço
+    descricao = models.TextField(blank=True, null=True)  # Descrição do serviço
+    tempo_estimado = models.DurationField()  # Tempo estimado de duração do serviço
+    categoria = models.CharField(max_length=100, blank=True, null=True)  # Categoria do serviço
 
     def __str__(self):
-        return f"{self.nome} - {self.preco}$"
+        return f"{self.nome} - R${self.preco}"
 
 class HorarioDeAtendimento(models.Model):
     dia_semana = models.CharField(max_length=9)  # Exemplo: "Segunda-feira"
@@ -28,7 +31,7 @@ class Agendamento(models.Model):
     def clean(self):
         # Verificar se o horário está dentro do expediente
         dia_semana = self.data.strftime('%A')  # Dia da semana em inglês
-        horario_atendimento = HorarioAtendimento.objects.filter(dia_semana=dia_semana).first()
+        horario_atendimento = HorarioDeAtendimento.objects.filter(dia_semana=dia_semana).first()
         if not horario_atendimento:
             raise ValidationError(f"O salão não funciona na data selecionada ({dia_semana}).")
 
