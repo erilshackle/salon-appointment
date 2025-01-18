@@ -3,4 +3,5 @@
 - venv\Scripts\activate
 - pip install django mysqlclient
 - python -m pip install --upgrade pip
+- python manage.py migrate
 - 
