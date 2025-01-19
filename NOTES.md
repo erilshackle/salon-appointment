@@ -48,7 +48,13 @@ links:
 http://127.0.0.1:8000/api/servicos/
 
 ```
-
+- seed
+``` bash
+python manage.py shell
+>>> from agenda.seeds import *
+>>> seed()
+>>> exit()
+```
 
 ##### frontend
 - npm install
