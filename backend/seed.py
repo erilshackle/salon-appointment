@@ -1,20 +1,28 @@
-import os
-import django
-from datetime import date, time
+from datetime import time, timedelta, date
+from myapp.models import Servico, HorarioRecorrente, Agendamento
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "beauty_salon.settings")
-django.setup()
+# Criar serviços
+Servico.objects.bulk_create([
+    Servico(nome="Corte de cabelo", preco=50.00, tempo_estimado=timedelta(minutes=30)),
+    Servico(nome="Manicure", preco=30.00, tempo_estimado=timedelta(minutes=45)),
+    Servico(nome="Pedicure", preco=40.00, tempo_estimado=timedelta(minutes=60)),
+    Servico(nome="Limpeza de pele", preco=100.00, tempo_estimado=timedelta(minutes=90)),
+])
 
-from agenda.models import Servico, HorarioDeAtendimento
+# Criar horários recorrentes
+HorarioRecorrente.objects.bulk_create([
+    HorarioRecorrente(dia_semana=0, hora_inicio=time(10, 0), hora_fim=time(19, 0)),  # Segunda-feira
+    HorarioRecorrente(dia_semana=1, hora_inicio=time(10, 0), hora_fim=time(19, 0)),  # Terça-feira
+    HorarioRecorrente(dia_semana=2, hora_inicio=time(10, 0), hora_fim=time(19, 0)),  # Quarta-feira
+    HorarioRecorrente(dia_semana=3, hora_inicio=time(10, 0), hora_fim=time(19, 0)),  # Quinta-feira
+    HorarioRecorrente(dia_semana=4, hora_inicio=time(10, 0), hora_fim=time(19, 0)),  # Sexta-feira
+    HorarioRecorrente(dia_semana=5, hora_inicio=time(10, 0), hora_fim=time(17, 0)),  # Sábado
+    HorarioRecorrente(dia_semana=6, hora_inicio=time(10, 0), hora_fim=time(17, 0)),  # Domingo
+])
 
-# Criando serviços
-Servico.objects.create(nome="Corte de Cabelo", preco=50.00, descricao="Corte masculino ou feminino", tempo_estimado="00:30:00", categoria="Cabelo")
-Servico.objects.create(nome="Manicure", preco=30.00, descricao="Cuidado e pintura das unhas", tempo_estimado="00:45:00", categoria="Unhas")
-Servico.objects.create(nome="Massagem Relaxante", preco=100.00, descricao="Massagem para alívio de estresse", tempo_estimado="01:00:00", categoria="Bem-estar")
-
-# Criando horários de atendimento
-HorarioDeAtendimento.objects.create(dia=date(2025, 1, 20), hora_inicio=time(9, 0), hora_fim=time(10, 0), disponivel=True)
-HorarioDeAtendimento.objects.create(dia=date(2025, 1, 20), hora_inicio=time(10, 0), hora_fim=time(11, 0), disponivel=True)
-HorarioDeAtendimento.objects.create(dia=date(2025, 1, 20), hora_inicio=time(11, 0), hora_fim=time(12, 0), disponivel=True)
-
-print("Serviços e horários criados com sucesso!")
+# Criar agendamentos iniciais
+servico = Servico.objects.first()
+Agendamento.objects.bulk_create([
+    Agendamento(servico=servico, nome_cliente="João Silva", data=date(2025, 1, 22), hora=time(10, 30)),
+    Agendamento(servico=servico, nome_cliente="Maria Oliveira", data=date(2025, 1, 22), hora=time(11, 30)),
+])
