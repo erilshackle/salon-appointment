@@ -36,7 +36,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 - python manage.py makemigrations
 - python manage.py migrate
 - pip install dj-rest-auth django-allauth
-- (in app)
+- python manage.py createsuperuser
+  ``` bash
+  Username > admin
+  Email > admin@mail.com
+  Password > admin
+  ```
+- python manage.py runserver
 
 
 

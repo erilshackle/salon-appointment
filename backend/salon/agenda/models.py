@@ -13,7 +13,7 @@ class Servico(models.Model):
         return self.nome
 
 class HorarioDeAtendimento(models.Model):
-    dia = models.DateField()  # Data específica
+    dia = models.DateField(default='2025-01-01')  # Data específica
     hora_inicio = models.TimeField()
     hora_fim = models.TimeField()
     disponivel = models.BooleanField(default=True)  # Define se o horário está disponível
