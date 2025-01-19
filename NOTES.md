@@ -43,7 +43,11 @@ CORS_ALLOW_ALL_ORIGINS = True
   Password > admin
   ```
 - python manage.py runserver
+```
+links:
+http://127.0.0.1:8000/api/servicos/
 
+```
 
 
 ##### frontend
