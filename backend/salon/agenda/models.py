@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 # from django.contrib.auth.models import User
+from .utils import enviar_email
 
 class Servico(models.Model):
     nome = models.CharField(max_length=100)
@@ -41,6 +42,7 @@ class Agendamento(models.Model):
     # )  # Associado ao usuário autenticado
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=100)
+    email_cliente = models.EmailField() # para envio de email
     data = models.DateField()  # Data específica do agendamento
     hora = models.TimeField()  # Hora específica do agendamento
 
@@ -66,3 +68,18 @@ class Agendamento(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+        # Enviar notificação por e-mail
+        assunto = "Confirmação de Agendamento"
+        mensagem = (
+            f"Olá {self.nome_cliente},\n\n"
+            f"Seu agendamento para o serviço '{self.servico.nome}' foi confirmado!\n"
+            f"Data: {self.data}\n"
+            f"Horário: {self.hora}\n"
+            f"Preço: {self.servico.preco:.2f}$00\n\n"
+            "Aguardamos você no horário marcado.\n\n"
+            "Atenciosamente,\n"
+            "Equipe do Salão"
+        )
+        destinatario = "email_do_cliente@example.com"  # Substitua pelo e-mail real do cliente
+        enviar_email(destinatario, assunto, mensagem)

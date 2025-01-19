@@ -136,6 +136,15 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1  # Requerido pelo django-allauth
 '''
 
+# Configurações de E-mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Exemplo para Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'salaosl@gmail.com'  # Seu e-mail
+EMAIL_HOST_PASSWORD = 'sua_senha'        # Sua senha ou senha de aplicativo
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
