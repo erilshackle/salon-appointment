@@ -4,19 +4,39 @@
 
 - python -m venv venv
 - venv\Scripts\activate
-- django-admin startproject salon
 - pip install django
+- django-admin startproject salon
+-  python manage.py startapp agenda
 - pip install mysqlclient djangorestframework django-cors-headers
 - python -m pip install --upgrade pip
-- python manage.py migrate
 - add to *settings.py*
-``` bash
-    INSTALLED_APPS = [
+``` py
+INSTALLED_APPS = [
     ...,
     'rest_framework',
+    'crosheaders',
+    'agenda'
 ]
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+   ...
+]
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+CORS_ALLOW_ALL_ORIGINS = True
 ```
-- (in app) python manage.py startapp agenda 
+- criar os models **agenda/models.py** 
+- python manage.py makemigrations
+- python manage.py migrate
+- pip install dj-rest-auth django-allauth
+- (in app)
 
 
 
