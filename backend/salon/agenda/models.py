@@ -12,14 +12,24 @@ class Servico(models.Model):
     def __str__(self):
         return self.nome
 
-class HorarioDeAtendimento(models.Model):
-    dia = models.DateField(default='2025-01-01')  # Data específica
-    hora_inicio = models.TimeField()
-    hora_fim = models.TimeField()
-    disponivel = models.BooleanField(default=True)  # Define se o horário está disponível
+class HorarioRecorrente(models.Model):
+    DIAS_DA_SEMANA = [
+        (0, 'Segunda-feira'),
+        (1, 'Terça-feira'),
+        (2, 'Quarta-feira'),
+        (3, 'Quinta-feira'),
+        (4, 'Sexta-feira'),
+        (5, 'Sábado'),
+        (6, 'Domingo'),
+    ]
+
+    dia_semana = models.IntegerField(choices=DIAS_DA_SEMANA)  # Define o dia da semana
+    hora_inicio = models.TimeField()  # Hora de início do expediente
+    hora_fim = models.TimeField()  # Hora de fim do expediente
 
     def __str__(self):
-        return f"{self.dia} - {self.hora_inicio} às {self.hora_fim} - {'Disponível' if self.disponivel else 'Indisponível'}"
+        dia = dict(self.DIAS_DA_SEMANA)[self.dia_semana]
+        return f"{dia} das {self.hora_inicio} às {self.hora_fim}"
 
 class Agendamento(models.Model):
     # usuario = models.ForeignKey(
@@ -27,20 +37,23 @@ class Agendamento(models.Model):
     # )  # Associado ao usuário autenticado
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=100)
-    data = models.DateField()
-    hora = models.TimeField()
+    data = models.DateField()  # Data específica do agendamento
+    hora = models.TimeField()  # Hora específica do agendamento
 
     def __str__(self):
         return f"{self.nome_cliente} - {self.servico.nome} ({self.data} {self.hora})"
 
     def clean(self):
-        # Verificar se o horário está disponível
-        horario = HorarioDeAtendimento.objects.filter(
-            dia=self.data, hora_inicio__lte=self.hora, hora_fim__gte=self.hora, disponivel=True
+        # Verificar se existe um horário recorrente para o dia e hora especificados
+        dia_semana = self.data.weekday()  # Obtém o dia da semana (0=Segunda, 6=Domingo)
+        horario = HorarioRecorrente.objects.filter(
+            dia_semana=dia_semana, 
+            hora_inicio__lte=self.hora, 
+            hora_fim__gte=self.hora
         ).first()
 
         if not horario:
-            raise ValidationError("O horário selecionado não está disponível.")
+            raise ValidationError("Não há horário de atendimento disponível para a data e hora selecionadas.")
 
         # Verificar se o horário já foi reservado
         if Agendamento.objects.filter(data=self.data, hora=self.hora).exists():

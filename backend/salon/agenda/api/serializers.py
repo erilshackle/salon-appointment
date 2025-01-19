@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from ..models import Servico, HorarioDeAtendimento, Agendamento
+from ..models import Servico, HorarioRecorrente, Agendamento
 
 class ServicoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servico
         fields = '__all__'
 
-class HorarioDeAtendimentoSerializer(serializers.ModelSerializer):
+class HorarioRecorrenteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HorarioDeAtendimento
+        model = HorarioRecorrente
         fields = '__all__'
 
 class AgendamentoSerializer(serializers.ModelSerializer):

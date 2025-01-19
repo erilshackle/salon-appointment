@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Servico, HorarioDeAtendimento, Agendamento
-from .serializers import ServicoSerializer, HorarioDeAtendimentoSerializer, AgendamentoSerializer
+from ..models import Servico, HorarioRecorrente, Agendamento
+from .serializers import ServicoSerializer, HorarioRecorrenteSerializer, AgendamentoSerializer
 
 class ServicoView(APIView):
     def get(self, request):
@@ -12,8 +12,8 @@ class ServicoView(APIView):
 
 class HorarioDisponivelView(APIView):
     def get(self, request):
-        horarios = HorarioDeAtendimento.objects.filter(disponivel=True)
-        serializer = HorarioDeAtendimentoSerializer(horarios, many=True)
+        horarios = HorarioRecorrente.objects.filter(disponivel=True)
+        serializer = HorarioRecorrenteSerializer(horarios, many=True)
         return Response(serializer.data)
 
 class AgendamentoView(APIView):
