@@ -1,5 +1,5 @@
 from datetime import time, timedelta, date
-from myapp.models import Servico, HorarioRecorrente, Agendamento
+from salon.agenda.models import Servico, HorarioRecorrente, Agendamento
 
 # Criar serviços
 Servico.objects.bulk_create([
