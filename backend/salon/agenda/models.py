@@ -27,6 +27,10 @@ class HorarioRecorrente(models.Model):
     hora_inicio = models.TimeField()  # Hora de início do expediente
     hora_fim = models.TimeField()  # Hora de fim do expediente
 
+    def clean(self):
+        if self.hora_inicio >= self.hora_fim:
+        raise ValidationError("O horário de início deve ser anterior ao horário de fim.")
+
     def __str__(self):
         dia = dict(self.DIAS_DA_SEMANA)[self.dia_semana]
         return f"{dia} das {self.hora_inicio} às {self.hora_fim}"
