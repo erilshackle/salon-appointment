@@ -29,7 +29,7 @@ class HorarioRecorrente(models.Model):
 
     def clean(self):
         if self.hora_inicio >= self.hora_fim:
-        raise ValidationError("O horário de início deve ser anterior ao horário de fim.")
+            raise ValidationError("O horário de início deve ser anterior ao horário de fim.")
 
     def __str__(self):
         dia = dict(self.DIAS_DA_SEMANA)[self.dia_semana]
