@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-# from django.contrib.auth.models import User
 
 class Servico(models.Model):
     nome = models.CharField(max_length=100)
@@ -23,45 +22,54 @@ class HorarioRecorrente(models.Model):
         (6, 'Domingo'),
     ]
 
-    dia_semana = models.IntegerField(choices=DIAS_DA_SEMANA)  # Define o dia da semana
-    hora_inicio = models.TimeField()  # Hora de início do expediente
-    hora_fim = models.TimeField()  # Hora de fim do expediente
+    dia_semana = models.IntegerField(choices=DIAS_DA_SEMANA)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
 
     def clean(self):
-        if self.hora_inicio >= self.hora_fim:
-            raise ValidationError("O horário de início deve ser anterior ao horário de fim.")
+        # Verificar se o horário não se sobrepõe a outro horário do mesmo dia
+        horarios_conflitantes = HorarioRecorrente.objects.filter(
+            dia_semana=self.dia_semana,
+            hora_inicio__lt=self.hora_fim,
+            hora_fim__gt=self.hora_inicio
+        )
+
+        if horarios_conflitantes.exists():
+            raise ValidationError("Este horário se sobrepõe a outro agendamento no mesmo dia.")
+
 
     def __str__(self):
         dia = dict(self.DIAS_DA_SEMANA)[self.dia_semana]
         return f"{dia} das {self.hora_inicio} às {self.hora_fim}"
 
 class Agendamento(models.Model):
-    # usuario = models.ForeignKey(
-    #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name="agendamentos"
-    # )  # Associado ao usuário autenticado
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=100)
-    data = models.DateField()  # Data específica do agendamento
-    hora = models.TimeField()  # Hora específica do agendamento
+    data = models.DateField()
+    hora = models.TimeField()
 
     def __str__(self):
         return f"{self.nome_cliente} - {self.servico.nome} ({self.data} {self.hora})"
 
     def clean(self):
         # Verificar se existe um horário recorrente para o dia e hora especificados
-        dia_semana = self.data.weekday()  # Obtém o dia da semana (0=Segunda, 6=Domingo)
+        dia_semana = self.data.weekday()
         horario = HorarioRecorrente.objects.filter(
-            dia_semana=dia_semana, 
-            hora_inicio__lte=self.hora, 
+            dia_semana=dia_semana,
+            hora_inicio__lte=self.hora,
             hora_fim__gte=self.hora
         ).first()
 
         if not horario:
             raise ValidationError("Não há horário de atendimento disponível para a data e hora selecionadas.")
-
+        
         # Verificar se o horário já foi reservado
         if Agendamento.objects.filter(data=self.data, hora=self.hora).exists():
             raise ValidationError("Este horário já foi reservado.")
+
+        # Atualizar o horário para não disponível
+        horario.disponivel = False
+        horario.save()
 
     def save(self, *args, **kwargs):
         self.clean()
