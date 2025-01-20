@@ -1,5 +1,14 @@
-# salon-appointment
+# Agendamento Salão
 
+##### quick-start _once installed_
+``` bash
+# na raiz do repositorio
+venv\Scripts\activate               # ativar o ambiente virtual
+python backend/manage.py runserver  # iniciar o backend
+cd frontend npm run dev             # iniciar o frontend
+```
+
+### Clonando e rodando o repositorio __once cloned__
 
 - **Install Project**
 | Depois de clonar, deve-se ver uma pasta frontend e backend (recomendo abrir um terminal na pasta frontend e outro na pasta backend)
