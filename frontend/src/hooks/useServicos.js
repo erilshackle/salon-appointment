@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getServicos } from "@/services/ServicoService";
 
 export function useServicos() {
   const [servicos, setServicos] = useState([]);
@@ -9,10 +8,14 @@ export function useServicos() {
   useEffect(() => {
     async function fetchServicos() {
       try {
-        const data = await getServicos();
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/servicos/`);
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar serviços: ${response.status} - ${response.statusText}`);
+        }
+        const data = await response.json();
         setServicos(data);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err : new Error("Erro desconhecido"));
       } finally {
         setLoading(false);
       }

@@ -1,3 +1,5 @@
+'use client'
+
 import { useServicos } from "@/hooks/useServicos";
 import ServicoCard from "@/components/ServicoCard";
 

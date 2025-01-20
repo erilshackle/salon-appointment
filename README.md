@@ -20,6 +20,10 @@ npm install
 # no backend
 python manage.py makemigrations
 python manage.py migrate
+python manage.py shell
+>>> from agenda.seeds import *
+>>> seed()
+>>> exit()
 ```
 
 - **Start/Run Project**
