@@ -1,0 +1,109 @@
+import { useState, useEffect } from "react";
+import { agendarServico } from "@/services/AgendamentoService";
+
+export default function AgendarForm({
+  servicos,
+  horarios,
+  formData,
+  setFormData,
+  fetchHorarios,
+}) {
+  const handleDataChange = (event) => {
+    const dataSelecionada = event.target.value;
+    setFormData({ ...formData, data: dataSelecionada });
+    fetchHorarios(dataSelecionada);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await agendarServico(formData);
+      alert("Agendamento realizado com sucesso!");
+    } catch (error) {
+      alert("Erro ao realizar o agendamento.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+      <div>
+        <label htmlFor="nome_cliente" className="block font-semibold">
+          Nome do Cliente
+        </label>
+        <input
+          type="text"
+          id="nome_cliente"
+          name="nome_cliente"
+          value={formData.nome_cliente}
+          onChange={(e) => setFormData({ ...formData, nome_cliente: e.target.value })}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="servico" className="block font-semibold">
+          Serviço
+        </label>
+        <select
+          id="servico"
+          name="servico"
+          value={formData.servico}
+          onChange={(e) => setFormData({ ...formData, servico: e.target.value })}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        >
+          <option value="">Selecione o serviço</option>
+          {servicos.map((servico) => (
+            <option key={servico.id} value={servico.id}>
+              {servico.nome}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="data" className="block font-semibold">
+          Data
+        </label>
+        <input
+          type="date"
+          id="data"
+          name="data"
+          value={formData.data}
+          onChange={handleDataChange}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="hora" className="block font-semibold">
+          Hora
+        </label>
+        <select
+          id="hora"
+          name="hora"
+          value={formData.hora}
+          onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        >
+          <option value="">Selecione o horário</option>
+          {horarios.map((horario) => (
+            <option key={horario.id} value={horario.hora_inicio}>
+              {horario.hora_inicio} - {horario.hora_fim}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-colors"
+      >
+        Agendar
+      </button>
+    </form>
+  );
+}
