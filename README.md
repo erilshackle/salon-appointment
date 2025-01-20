@@ -1,7 +1,34 @@
 # salon-appointment
 
+
+- **Install Project**
+| Depois de clonar, deve-se ver uma pasta frontend e backend (recomendo abrir um terminal na pasta frontend e outro na pasta backend)
 ``` bash
+# para o backend (cd backend):
 python -m venv venv
 venv\Scripts\activate   # (No OS: source venv/bin/activate)
 pip install -r requirements.txt
+```
+``` bash
+#para o frontend (cd frontend):
+npm install
+```
+
+- **Setup Project**
+| tenha uma conexao com a base de dados mysql e crie uma BD chamada: salao_agenda (apenas crie, vazia mesmo)
+``` bash
+# no backend
+python manage.py makemigrations
+python manage.py migrate
+```
+
+- **Start/Run Project**
+|Antes, inicie a conexao com a base de dados mysql (asegure de ter uma base de dados salao_agenda criada)
+``` bash
+# no backend
+python manage.py runserver
+```
+``` bash
+# no frontend
+npm run dev
 ```
