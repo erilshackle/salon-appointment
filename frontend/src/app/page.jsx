@@ -6,6 +6,7 @@ export default function Home() {
       <div className="p-6 bg-white shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-4">Bem-vindo ao Sistema de Agendamento</h1>
         <p className="text-gray-700">Comece agendando seus serviços!</p>
+        <p className="">by Diana & Erilando</p>
       </div>
     </main>
   );
