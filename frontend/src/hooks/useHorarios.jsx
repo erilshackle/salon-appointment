@@ -21,7 +21,7 @@ export function useHorarios(selectedDate) {
     }
 
     fetchHorarios();
-  }, [selectedDate]);
+  }, [selectedDate]); 
 
   return { horarios, loading, error };
 }

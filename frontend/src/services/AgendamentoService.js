@@ -1,5 +1,5 @@
 export async function agendarServico(data) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/agendamentos/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/agendamentos/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

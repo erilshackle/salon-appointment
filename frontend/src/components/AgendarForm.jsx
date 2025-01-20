@@ -11,7 +11,7 @@ export default function AgendarForm({
   const handleDataChange = (event) => {
     const dataSelecionada = event.target.value;
     setFormData({ ...formData, data: dataSelecionada });
-    fetchHorarios(dataSelecionada);
+    fetchHorarios(dataSelecionada);  // Chama a função para obter os horários para a data selecionada
   };
 
   const handleSubmit = async (event) => {
@@ -26,6 +26,7 @@ export default function AgendarForm({
 
   return (
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+      {/* Nome do Cliente */}
       <div>
         <label htmlFor="nome_cliente" className="block font-semibold">
           Nome do Cliente
@@ -41,6 +42,39 @@ export default function AgendarForm({
         />
       </div>
 
+      {/* Email */}
+      <div>
+        <label htmlFor="email" className="block font-semibold">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email || ''}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        />
+      </div>
+
+      {/* Telefone */}
+      <div>
+        <label htmlFor="telefone" className="block font-semibold">
+          Telefone
+        </label>
+        <input
+          type="text"
+          id="telefone"
+          name="telefone"
+          value={formData.telefone || ''}
+          onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+          className="w-full p-3 border rounded-lg shadow-sm"
+          required
+        />
+      </div>
+
+      {/* Serviço */}
       <div>
         <label htmlFor="servico" className="block font-semibold">
           Serviço
@@ -62,6 +96,7 @@ export default function AgendarForm({
         </select>
       </div>
 
+      {/* Data */}
       <div>
         <label htmlFor="data" className="block font-semibold">
           Data
@@ -77,6 +112,7 @@ export default function AgendarForm({
         />
       </div>
 
+      {/* Hora */}
       <div>
         <label htmlFor="hora" className="block font-semibold">
           Hora
@@ -90,11 +126,21 @@ export default function AgendarForm({
           required
         >
           <option value="">Selecione o horário</option>
-          {horarios.map((horario) => (
-            <option key={horario.id} value={horario.hora_inicio}>
-              {horario.hora_inicio} - {horario.hora_fim}
-            </option>
-          ))}
+          {horarios.map((horario) => {
+            const horasDisponiveis = [];
+            const horaInicio = parseInt(horario.hora_inicio.split(":")[0]);
+            const horaFim = parseInt(horario.hora_fim.split(":")[0]);
+
+            for (let i = horaInicio; i <= horaFim; i++) {
+              horasDisponiveis.push(i);
+            }
+
+            return horasDisponiveis.map((hora) => (
+              <option key={hora} value={`${hora}:00`}>
+                {hora}:00
+              </option>
+            ));
+          })}
         </select>
       </div>
 
