@@ -5,7 +5,8 @@
 # na raiz do repositorio
 venv\Scripts\activate               # ativar o ambiente virtual
 python backend/manage.py runserver  # iniciar o backend
-cd frontend npm run dev             # iniciar o frontend
+cd frontend 
+npm run dev                         # iniciar o frontend
 ```
 
 ### Clonando e rodando o repositorio __once cloned__
@@ -24,7 +25,7 @@ npm install
 ```
 
 - **Setup Project**
-| tenha uma conexao com a base de dados mysql e crie uma BD chamada: salao_agenda (apenas crie, vazia mesmo)
+| tenha uma conexao com a base de dados mysql e crie uma BD chamada: salon_agenda (apenas crie, vazia mesmo)
 ``` bash
 # no backend
 python manage.py makemigrations
