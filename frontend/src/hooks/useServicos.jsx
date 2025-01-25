@@ -26,7 +26,7 @@ export function useServicos() {
 
   const eliminarServico = async (id) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/servicos/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {

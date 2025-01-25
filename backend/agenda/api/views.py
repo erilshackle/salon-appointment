@@ -26,6 +26,24 @@ class ServicoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id):
+        try:
+            servico = Servico.objects.get(id=id)
+        except Servico.DoesNotExist:
+            return Response({"error": "Serviço não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ServicoSerializer(servico, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, id):
+        try:
+            servico = Servico.objects.get(id=id)
+            servico.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Servico.DoesNotExist:
+            return Response({"error": "Serviço não encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 # **HorarioDisponivelView** para verificar horários disponíveis
 class HorarioDisponivelView(APIView):
@@ -56,6 +74,10 @@ class HorarioDisponivelView(APIView):
 
 # **AgendamentoView** para criar agendamentos
 class AgendamentoView(APIView):
+    def get(self, request):
+        agendamentos = Agendamento.objects.all()
+        serializer = AgendamentoSerializer(agendamentos, many=True)
+        return Response(serializer.data)
     def post(self, request):
         serializer = AgendamentoSerializer(data=request.data)
         if serializer.is_valid():
