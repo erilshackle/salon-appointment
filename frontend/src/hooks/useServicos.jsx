@@ -8,7 +8,7 @@ export function useServicos() {
   useEffect(() => {
     async function fetchServicos() {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/servicos/`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/`);
         if (!response.ok) {
           throw new Error(`Erro ao buscar serviços: ${response.status} - ${response.statusText}`);
         }

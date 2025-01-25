@@ -1,18 +1,24 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, serializers
-from django.http import Http404
 from ..models import Servico, HorarioRecorrente, Agendamento
 from .serializers import ServicoSerializer, HorarioRecorrenteSerializer, AgendamentoSerializer
 from datetime import datetime
 
 # **ServicoView** para listar e criar serviços
-# **ServicoView** para listar, criar e atualizar serviços
 class ServicoView(APIView):
-    def get(self, request):
-        servicos = Servico.objects.all()
-        serializer = ServicoSerializer(servicos, many=True)
-        return Response(serializer.data)
+    def get(self, request, id=None):
+        if id:
+            try:
+                servico = Servico.objects.get(id=id)
+                serializer = ServicoSerializer(servico)
+                return Response(serializer.data)
+            except Servico.DoesNotExist:
+                return Response({"error": "Serviço não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            servicos = Servico.objects.all()
+            serializer = ServicoSerializer(servicos, many=True)
+            return Response(serializer.data)
 
     def post(self, request):
         serializer = ServicoSerializer(data=request.data)
@@ -20,34 +26,6 @@ class ServicoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    # Adicionando o método PUT para atualizar um serviço
-    def put(self, request, pk):
-        try:
-            servico = Servico.objects.get(pk=pk)  # Encontrar o serviço pelo id
-        except Servico.DoesNotExist:
-            return Response({"error": "Serviço não encontrado."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Atualizar os dados do serviço
-        serializer = ServicoSerializer(servico, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-    
-class ServicoDetailView(APIView):
-    def get_object(self, id):
-        try:
-            return Servico.objects.get(id=id)
-        except Servico.DoesNotExist:
-            raise Http404
-
-    def get(self, request, id):
-        servico = self.get_object(id)
-        serializer = ServicoSerializer(servico)
-        return Response(serializer.data)
 
 # **HorarioDisponivelView** para verificar horários disponíveis
 class HorarioDisponivelView(APIView):
