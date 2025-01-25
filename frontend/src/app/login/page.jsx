@@ -1,57 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import api from "@/services/api";
+import { useAuth } from "@/hooks/useAuth";
 
-export default function Login() {
+export default function LoginPage() {
+  const { login, error } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const res = await api.post("/api/token/", { username, password });
-
-      const { access, refresh } = res.data;
-
-      // Salvar os tokens nos cookies
-      Cookies.set("access_token", access, { expires: 1 }); // 1 dia
-      Cookies.set("refresh_token", refresh, { expires: 7 }); // 7 dias
-
-      // Redirecionar para o dashboard
-      router.push("/dashboard");
-    } catch (err) {
-      setError("Erro no login. Verifique suas credenciais.");
-    }
+    login(username, password); // Chama a função de login do hook
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col items-center">
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="mb-2 p-2 border rounded"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="mb-2 p-2 border rounded"
-        required
-      />
-      {error && <p className="text-red-500">{error}</p>}
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded">
-        Login
-      </button>
-    </form>
+    <div className="flex flex-col items-center">
+      <h1 className="text-2xl font-bold mb-4">Login</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="mb-2 p-2 border rounded"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="mb-2 p-2 border rounded"
+          required
+        />
+        {error && <p className="text-red-500">{error}</p>}
+        <button type="submit" className="p-2 bg-blue-500 text-white rounded">
+          Login
+        </button>
+      </form>
+    </div>
   );
 }

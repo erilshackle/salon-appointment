@@ -1,20 +1,16 @@
 import { NextResponse } from "next/server";
-import { getCookie } from "cookies-next"; // Opcional: pode usar para lidar com cookies
+import { getCookie } from "cookies-next";
 
 export function middleware(req) {
-  // Verificar se o token está presente no cookie
-  const token = req.cookies.get("access_token")?.value;
+  const token = getCookie("access_token", { req });
 
-  // Se não houver token, redireciona para a página de login
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Permite que a requisição prossiga se o token existir
   return NextResponse.next();
 }
 
-// Configurar rotas protegidas
 export const config = {
-  matcher: ["/dashboard/:path*", "/outro-caminho-protegido/:path*"], // Rotas protegidas
+  matcher: ["/dashboard/:path*", "/outros-caminhos-protegidos/:path*"],
 };
