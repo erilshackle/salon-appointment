@@ -47,9 +47,14 @@ INSTALLED_APPS = [
 
     'rest_framework',  # Django REST Framework
     'corsheaders',  # CORS Headers
+    'rest_framework_simplejwt',
 
     'agenda',
 ]
+
+
+
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # adicionar o CORS
@@ -125,6 +130,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 '''
@@ -159,3 +167,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+
