@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'salon_agenda',  
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '0987654321',
         'HOST': 'localhost',
         'PORT': '3306',
     }
