@@ -7,6 +7,7 @@ from .serializers import ServicoSerializer, HorarioRecorrenteSerializer, Agendam
 from datetime import datetime
 
 # **ServicoView** para listar e criar serviços
+# **ServicoView** para listar, criar e atualizar serviços
 class ServicoView(APIView):
     def get(self, request):
         servicos = Servico.objects.all()
@@ -19,6 +20,22 @@ class ServicoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Adicionando o método PUT para atualizar um serviço
+    def put(self, request, pk):
+        try:
+            servico = Servico.objects.get(pk=pk)  # Encontrar o serviço pelo id
+        except Servico.DoesNotExist:
+            return Response({"error": "Serviço não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Atualizar os dados do serviço
+        serializer = ServicoSerializer(servico, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
     
 class ServicoDetailView(APIView):
     def get_object(self, id):

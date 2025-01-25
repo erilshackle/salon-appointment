@@ -22,7 +22,7 @@ export default function Agendar() {
 
   const fetchHorarios = async (dataSelecionada) => {
     try {
-      const response = await axios.get(`/horarios-disponiveis/?data=${dataSelecionada}`);
+      const response = await axios.get(`/api/horarios-disponiveis/?data=${dataSelecionada}`);
       
       // Verifique a resposta e filtre os horários com base no dia da semana
       if (response.data && response.data.length > 0) {

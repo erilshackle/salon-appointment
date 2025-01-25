@@ -13,7 +13,7 @@ export default function EditarServico() {
   useEffect(() => {
     async function fetchServico() {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/servicos/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/${id}`);
         if (!response.ok) {
           throw new Error(`Erro ao buscar serviço: ${response.status}`);
         }
@@ -32,7 +32,7 @@ export default function EditarServico() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/servicos/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(servico),
@@ -65,7 +65,7 @@ export default function EditarServico() {
         <div>
           <label className="block text-gray-700">Descrição</label>
           <textarea
-            value={servico.descricao}
+            value={servico.descricao || ""}
             onChange={(e) => setServico({ ...servico, descricao: e.target.value })}
             className="w-full p-2 border rounded"
           />
