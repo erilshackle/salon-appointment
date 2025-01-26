@@ -1,41 +1,65 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import api from "@/services/api";
 
 export default function LoginPage() {
-  const { login, error } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter(); // Redirecionamento após login
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    login(username, password); // Chama a função de login do hook
+    setError(""); // Limpa o erro antes de tentar novamente
+
+    try {
+      const response = await api.post("/token/", {
+        username, // Envia o username
+        password, // Envia a senha
+      });
+
+      const { access, refresh } = response.data;
+
+      // Armazena os tokens no localStorage (ou cookies, se preferir)
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
+
+      // Redireciona para o painel
+      router.push("/dashboard");
+    } catch (err) {
+      setError("Credenciais inválidas. Tente novamente.");
+    }
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-8 rounded-lg shadow-md w-96"
+      >
+        <h1 className="text-2xl font-semibold mb-4">Login</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-2 p-2 border rounded"
-          required
+          className="w-full p-2 border rounded mb-4"
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-2 p-2 border rounded"
-          required
+          className="w-full p-2 border rounded mb-4"
         />
-        {error && <p className="text-red-500">{error}</p>}
-        <button type="submit" className="p-2 bg-blue-500 text-white rounded">
-          Login
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        >
+          Entrar
         </button>
       </form>
     </div>

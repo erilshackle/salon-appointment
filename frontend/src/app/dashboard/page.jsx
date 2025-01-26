@@ -1,17 +1,11 @@
+// src/app/dashboard/page.jsx
 "use client";
-import { useAuth } from "@/hooks/useAuth";
 
-export default function Dashboard() {
-  const { user, logout } = useAuth();
-
-  if (!user) {
-    return <p>Carregando...</p>; // Ou redirecione para o login
-  }
-
+export default function DashboardPage() {
   return (
     <div>
-      <h1>Bem-vindo, {user.username}!</h1>
-      <button onClick={logout}>Sair</button>
+      <h1 className="text-2xl font-semibold mb-4">Dashboard - Visão Geral</h1>
+      <p>Exiba aqui algumas estatísticas ou informações gerais sobre o sistema.</p>
     </div>
   );
 }
