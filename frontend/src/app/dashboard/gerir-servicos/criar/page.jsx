@@ -8,7 +8,8 @@ export default function CriarServico() {
     nome: '',
     descricao: '',
     preco: '',
-    categoria: '',  // Adicionando categoria ao estado
+    tempo_estimado: '',
+    categoria: '',  // Categoria como texto
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,7 +33,7 @@ export default function CriarServico() {
       }
 
       // Após criar o serviço, redireciona para a página de serviços
-      router.push('/servicos');
+      router.push('gerir-servicos');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
@@ -64,7 +65,6 @@ export default function CriarServico() {
             value={servico.descricao || ''}
             onChange={(e) => setServico({ ...servico, descricao: e.target.value })}
             className="w-full p-2 border rounded"
-            required
           />
         </div>
 
@@ -76,6 +76,19 @@ export default function CriarServico() {
             value={servico.preco}
             onChange={(e) => setServico({ ...servico, preco: e.target.value })}
             className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        {/* Tempo Estimado */}
+        <div>
+          <label className="block text-gray-700">Tempo Estimado</label>
+          <input
+            type="text"
+            value={servico.tempo_estimado}
+            onChange={(e) => setServico({ ...servico, tempo_estimado: e.target.value })}
+            className="w-full p-2 border rounded"
+            placeholder="Ex: 01:30:00"
             required
           />
         </div>

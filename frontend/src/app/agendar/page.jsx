@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from "react";
 import { useServicos } from "@/hooks/useServicos";
@@ -11,11 +11,15 @@ export default function Agendar() {
   const { servicos, loading: servicosLoading, error: servicosError } = useServicos();
   const [horarios, setHorarios] = useState([]); // Estado para armazenar os horários
 
+  // Simular seleção de serviço (use um ID dinâmico em produção)
+  const selectedServiceId = 1; // ID do serviço selecionado
+  const servicoSelecionado = servicos?.find((servico) => servico.id === selectedServiceId);
+
   const [formData, setFormData] = useState({
     nome_cliente: '',
     email: '',
     telefone: '',
-    servico: '',
+    servico: servicoSelecionado?.id || '', // Inclui o serviço selecionado no estado inicial
     data: '',
     hora: ''
   });
@@ -43,13 +47,13 @@ export default function Agendar() {
 
   if (servicosLoading) return <p>Carregando serviços...</p>;
   if (servicosError) return <p>Erro ao carregar serviços!</p>;
+  if (!servicoSelecionado) return <p>Serviço não encontrado!</p>;
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center">Agendar Atendimento</h1>
-      <h1>Agendar Serviço</h1>
       <AgendarForm
-        servicos={servicos || []}
+        servico={servicoSelecionado} // Passa o serviço como prop
         horarios={horarios || []}
         formData={formData}
         setFormData={setFormData}

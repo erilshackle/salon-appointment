@@ -1,35 +1,29 @@
-'use client';
+'use client'
 
-import {useRouter} from 'next/navigation'
+import { useState, useEffect } from 'react';
 import { agendarServico } from '@/services/AgendamentoService';
 
-export default function AgendarForm({
-  servico, // Serviço recebido via props
-  formData,
+export default function AgendamentoForm({
+  servicos,
   horarios,
+  formData,
   setFormData,
   fetchHorarios
 }) {
-  const router = useRouter();
-
   const handleDataChange = (event) => {
     const dataSelecionada = event.target.value;
     setFormData({ ...formData, data: dataSelecionada });
-    fetchHorarios(dataSelecionada); // Função permanece inalterada
+    fetchHorarios(dataSelecionada);  // Chama a função para obter os horários para a data selecionada
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const payload = { ...formData, servico: servico.id }; // Garante que o ID do serviço será enviado
-      await agendarServico(payload);
+      await agendarServico(formData);
       alert('Agendamento realizado com sucesso!');
     } catch (error) {
-      router.push('/agendamentos');
+      alert('Erro ao realizar o agendamento.');
     }
-    alert('Erro ao realizar o agendamento.');
   };
 
   return (
@@ -91,7 +85,7 @@ export default function AgendarForm({
           type="text"
           id="servico"
           name="servico"
-          value={servico?.nome || ''} // Mostra o nome do serviço
+          value={servicos.find((servico) => servico.id === formData.servico)?.nome || ''}
           readOnly
           className="w-full p-3 border rounded-lg shadow-sm"
         />
@@ -129,8 +123,8 @@ export default function AgendarForm({
           <option value="">Selecione o horário</option>
           {horarios.map((horario) => {
             const horasDisponiveis = [];
-            const horaInicio = parseInt(horario.hora_inicio.split(":")[0]);
-            const horaFim = parseInt(horario.hora_fim.split(":")[0]);
+            const horaInicio = parseInt(horario.hora_inicio.split(':')[0]);
+            const horaFim = parseInt(horario.hora_fim.split(':')[0]);
 
             for (let i = horaInicio; i <= horaFim; i++) {
               horasDisponiveis.push(i);

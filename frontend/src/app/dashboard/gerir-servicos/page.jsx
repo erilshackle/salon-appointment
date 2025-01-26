@@ -22,10 +22,26 @@ export default function Servicos() {
     }
   };
 
+  const handleAdicionar = () => {
+    // Navegar para a página de adição de serviço
+    router.push("gerir-servicos/criar");
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center">Serviços Disponíveis</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      
+      {/* Botão de adicionar serviço */}
+      <div className="text-right mb-4">
+        <button
+          onClick={handleAdicionar}
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+        >
+          Adicionar Serviço
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
         {servicos.map((servico) => (
           <ServicoCard
             key={servico.id}

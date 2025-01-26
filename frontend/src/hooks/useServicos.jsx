@@ -24,6 +24,27 @@ export function useServicos() {
     fetchServicos();
   }, []);
 
+  const createServico = async (newServico) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newServico),
+      });
+
+      if (!response.ok) throw new Error('Erro ao criar serviço');
+      const createdServico = await response.json();
+      setServicos([...servicos, createdServico]); // Atualiza a lista com o novo serviço
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const eliminarServico = async (id) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/servicos/${id}`, {
@@ -38,5 +59,7 @@ export function useServicos() {
     }
   };
 
-  return { servicos, loading, error, eliminarServico };
+  return { servicos, loading, error, eliminarServico, createServico };
 }
+
+export default useServicos;
