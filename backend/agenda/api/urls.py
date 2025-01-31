@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ServicoView, HorarioDisponivelView, HorarioRecorrenteView, HorarioRecorrenteDetailView, AgendamentoView, AgendamentoDetailView
+from .views import ServicoView, AgendamentosHojeView, HorarioDisponivelView, HorarioRecorrenteView, HorarioRecorrenteDetailView, AgendamentoView, AgendamentoDetailView
 
 urlpatterns = [
     # servicos
@@ -8,6 +8,7 @@ urlpatterns = [
     #agendamentos
     path('agendamentos/', AgendamentoView.as_view(), name='agendamentos'),
     path('agendamentos/<int:pk>/', AgendamentoDetailView.as_view(), name='agendamento-detail'),
+    path('agendamentos-hoje/', AgendamentosHojeView.as_view(), name='agendamentos-hoje'),
     # horarios disponiveis para uma /?data
     path('horarios-disponiveis/', HorarioDisponivelView.as_view(), name='horarios-disponiveis'),
     # horarios

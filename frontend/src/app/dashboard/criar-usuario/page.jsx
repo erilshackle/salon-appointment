@@ -17,7 +17,7 @@ export default function CriarUsuarioPage() {
     setSuccess("");
 
     try {
-      const response = await api.post("/usuarios", {
+      const response = await api.post("/users/register/", {
         username,
         password,
         role,

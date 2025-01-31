@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, serializers
 from ..models import Servico, HorarioRecorrente, Agendamento
 from .serializers import ServicoSerializer, HorarioRecorrenteSerializer, AgendamentoSerializer
-from datetime import datetime
+from datetime import datetime, date
 
 # **ServicoView** para listar e criar serviços
 class ServicoView(APIView):
@@ -72,12 +72,27 @@ class HorarioDisponivelView(APIView):
         serializer = HorarioRecorrenteSerializer(horarios_disponiveis, many=True)
         return Response(serializer.data)
 
+class AgendamentosHojeView(APIView):
+    def get(self, request):
+        today = date.today()
+        agendamentos = Agendamento.objects.filter(data=today)
+        serializer = AgendamentoSerializer(agendamentos, many=True)
+        return Response(serializer.data)
+
 # **AgendamentoView** para criar agendamentos
 class AgendamentoView(APIView):
     def get(self, request):
         agendamentos = Agendamento.objects.all()
         serializer = AgendamentoSerializer(agendamentos, many=True)
         return Response(serializer.data)
+    
+    def get_today(self, request):
+        today = date.today()
+        agendamentos = Agendamento.objects.filter(data=today)
+        serializer = AgendamentoSerializer(agendamentos, many=True)
+        return Response(serializer.data)
+    
+
     def post(self, request):
         serializer = AgendamentoSerializer(data=request.data)
         if serializer.is_valid():

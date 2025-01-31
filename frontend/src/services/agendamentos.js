@@ -1,9 +1,9 @@
 // services/agendamentos.js
-import axios from "./axios"; // Importa a instância do axios configurada
+import api from "./api"; // Importa a instância do axios configurada
 
 export const getAgendamentos = async (token) => {
   try {
-    const response = await axios.get("/api/agendamentos/", {
+    const response = await api.get("/agendamentos/", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -17,7 +17,7 @@ export const getAgendamentos = async (token) => {
 
 export const deleteAgendamento = async (id, token) => {
   try {
-    await axios.delete(`/api/agendamentos/${id}/`, {
+    await api.delete(`/agendamentos/${id}/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

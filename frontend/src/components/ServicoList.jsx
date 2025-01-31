@@ -20,7 +20,7 @@ export default function ServicoList() {
           <li key={servico.id} className="p-4 border rounded-lg shadow-md">
             <h3 className="text-xl font-semibold">{servico.nome}</h3>
             <p>{servico.categoria}</p>
-            <p>{servico.preco} USD</p>
+            <p>{servico.preco} ECV</p>
             <p>{servico.tempo_estimado}</p>
           </li>
         ))}

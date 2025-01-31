@@ -13,7 +13,7 @@ export default function Servicos() {
 
   const handleEditar = (servico) => {
     // Navegar para a página de edição com o ID do serviço na URL
-    router.push(`/servicos/${servico.id}/editar`);
+    router.push(`/dashboard/gerir-servicos/${servico.id}/editar`);
   };
 
   const handleEliminar = (servico) => {
