@@ -1,0 +1,69 @@
+<!-- agenda/templates/home.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial - Agenda</title>
+    <!-- Bootstrap CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header class="text-center my-5">
+            <h1 class="display-4">Bem-vindo à Agenda!</h1>
+            <p class="lead">Gerencie seus serviços e agendamentos de forma fácil e rápida.</p>
+        </header>
+
+        <!-- Cards de Navegação -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Serviços</h5>
+                        <p class="card-text">Veja a lista de serviços disponíveis.</p>
+                        <a href="{% url 'servicos' %}" class="btn btn-primary">Acessar Serviços</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Agendamentos</h5>
+                        <p class="card-text">Consulte ou crie novos agendamentos.</p>
+                        <a href="{% url 'agendamentos' %}" class="btn btn-primary">Acessar Agendamentos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Horários Disponíveis</h5>
+                        <p class="card-text">Confira os horários disponíveis para agendamento.</p>
+                        <a href="{% url 'horarios-disponiveis' %}" class="btn btn-primary">Ver Horários</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Horários Recorrentes</h5>
+                        <p class="card-text">Gerencie horários recorrentes.</p>
+                        <a href="{% url 'horarios' %}" class="btn btn-primary">Ver Horários Recorrentes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="text-center my-5">
+            <p class="text-muted">© 2023 Agenda. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JavaScript e dependências (opcional, para funcionalidades como dropdowns, modais, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
