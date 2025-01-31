@@ -5,21 +5,21 @@ import { useServicos } from "@/hooks/useServicos";
 import { useHorarios } from "@/hooks/useHorarios";
 import AgendarForm from "@/components/AgendarForm";
 import axios from "@/services/axios";
+import Navbar from "@/components/Navbar"; // 🔹 Importando o menu
 
 export default function Agendar() {
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Data inicial
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const { servicos, loading: servicosLoading, error: servicosError } = useServicos();
-  const [horarios, setHorarios] = useState([]); // Estado para armazenar os horários
+  const [horarios, setHorarios] = useState([]);
 
-  // Simular seleção de serviço (use um ID dinâmico em produção)
-  const selectedServiceId = 1; // ID do serviço selecionado
+  const selectedServiceId = 1;
   const servicoSelecionado = servicos?.find((servico) => servico.id === selectedServiceId);
 
   const [formData, setFormData] = useState({
     nome_cliente: '',
     email: '',
     telefone: '',
-    servico: servicoSelecionado?.id || '', // Inclui o serviço selecionado no estado inicial
+    servico: servicoSelecionado?.id || '',
     data: '',
     hora: ''
   });
@@ -27,16 +27,10 @@ export default function Agendar() {
   const fetchHorarios = async (dataSelecionada) => {
     try {
       const response = await axios.get(`/api/horarios-disponiveis/?data=${dataSelecionada}`);
-      
-      // Verifique a resposta e filtre os horários com base no dia da semana
-      if (response.data && response.data.length > 0) {
-        setHorarios(response.data); // Atualiza os horários
-      } else {
-        setHorarios([]); // Nenhum horário encontrado para o dia
-      }
+      setHorarios(response.data.length > 0 ? response.data : []);
     } catch (error) {
       console.error("Erro ao buscar horários:", error);
-      setHorarios([]); // Caso ocorra erro, limpa os horários
+      setHorarios([]);
     }
   };
 
@@ -45,20 +39,26 @@ export default function Agendar() {
     console.log("Horários:", horarios);
   }, [servicos, horarios]);
 
-  if (servicosLoading) return <p>Carregando serviços...</p>;
-  if (servicosError) return <p>Erro ao carregar serviços!</p>;
-  if (!servicoSelecionado) return <p>Serviço não encontrado!</p>;
+  if (servicosLoading) return <p className="text-center text-gray-600">Carregando serviços...</p>;
+  if (servicosError) return <p className="text-center text-red-500">Erro ao carregar serviços!</p>;
+  if (!servicoSelecionado) return <p className="text-center text-gray-600">Serviço não encontrado!</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center">Agendar Atendimento</h1>
-      <AgendarForm
-        servico={servicoSelecionado} // Passa o serviço como prop
-        horarios={horarios || []}
-        formData={formData}
-        setFormData={setFormData}
-        fetchHorarios={fetchHorarios} // Passando a função fetchHorarios
-      />
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
+      <Navbar />
+
+      <div className="flex-grow flex items-center justify-center w-full px-4">
+        <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg mt-20">
+          <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Agendar Atendimento</h1>
+          <AgendarForm
+            servico={servicoSelecionado}
+            horarios={horarios || []}
+            formData={formData}
+            setFormData={setFormData}
+            fetchHorarios={fetchHorarios}
+          />
+        </div>
+      </div>
     </div>
   );
 }
