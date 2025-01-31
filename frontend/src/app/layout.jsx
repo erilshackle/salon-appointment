@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import Menu from "@/components/Menu"
 
 export const metadata = {
   title: "Sistema de Agendamento",
@@ -8,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
-      <body>{children}</body>
+      <body>
+          <Menu />
+          {children}
+        </body>
     </html>
   );
 }
