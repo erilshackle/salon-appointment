@@ -12,14 +12,11 @@ export default function Agendar() {
   const { servicos, loading: servicosLoading, error: servicosError } = useServicos();
   const [horarios, setHorarios] = useState([]);
 
-  const selectedServiceId = 1;
-  const servicoSelecionado = servicos?.find((servico) => servico.id === selectedServiceId);
-
   const [formData, setFormData] = useState({
     nome_cliente: '',
     email: '',
     telefone: '',
-    servico: servicoSelecionado?.id || '',
+    servico: '',
     data: '',
     hora: ''
   });
@@ -41,7 +38,6 @@ export default function Agendar() {
 
   if (servicosLoading) return <p className="text-center text-gray-600">Carregando serviços...</p>;
   if (servicosError) return <p className="text-center text-red-500">Erro ao carregar serviços!</p>;
-  if (!servicoSelecionado) return <p className="text-center text-gray-600">Serviço não encontrado!</p>;
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
@@ -49,7 +45,8 @@ export default function Agendar() {
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg mt-20">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Agendar Atendimento</h1>
           <AgendarForm
-            servico={servicoSelecionado}
+            servicos={servicos || []} // Passando a lista de serviços
+            servicoSelecionado={formData.servico} // Passando o serviço selecionado
             horarios={horarios || []}
             formData={formData}
             setFormData={setFormData}

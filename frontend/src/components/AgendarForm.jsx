@@ -1,10 +1,11 @@
 'use client';
 
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { agendarServico } from '@/services/AgendamentoService';
 
 export default function AgendarForm({
-  servico, // Serviço recebido via props
+  servicos, // Lista de serviços recebida via props
+  servicoSelecionado, // Serviço selecionado
   formData,
   horarios,
   setFormData,
@@ -17,19 +18,23 @@ export default function AgendarForm({
     setFormData({ ...formData, data: dataSelecionada });
     fetchHorarios(dataSelecionada); // Função permanece inalterada
   };
-  
+
+  const handleServicoChange = (event) => {
+    const servicoId = event.target.value;
+    setFormData({ ...formData, servico: servicoId });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const payload = { ...formData, servico: servico.id }; // Garante que o ID do serviço será enviado
+      const payload = { ...formData, servico: formData.servico }; // Garante que o ID do serviço será enviado
       await agendarServico(payload);
       alert('Agendamento realizado com sucesso!');
-    } catch (error) {
       router.push('/agendamentos');
+    } catch (error) {
+      alert('Erro ao realizar o agendamento.');
     }
-    alert('Erro ao realizar o agendamento.');
   };
 
   return (
@@ -87,14 +92,21 @@ export default function AgendarForm({
         <label htmlFor="servico" className="block font-semibold">
           Serviço
         </label>
-        <input
-          type="text"
+        <select
           id="servico"
           name="servico"
-          value={servico?.nome || ''} // Mostra o nome do serviço
-          readOnly
+          value={formData.servico}
+          onChange={handleServicoChange}
           className="w-full p-3 border rounded-lg shadow-sm"
-        />
+          required
+        >
+          <option value="">Selecione um serviço</option>
+          {servicos.map((servico) => (
+            <option key={servico.id} value={servico.id}>
+              {servico.nome}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Data */}
