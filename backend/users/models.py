@@ -1,19 +1,12 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+# users/models.py
 from django.db import models
 
-class CustomUser(AbstractUser):
+class Funcionario(models.Model):
+    nome = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-
-    groups = models.ManyToManyField(
-        Group,
-        related_name="customuser_groups",  # Adicionado para evitar conflito
-        blank=True,
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name="customuser_user_permissions",  # Adicionado para evitar conflito
-        blank=True,
-    )
+    cargo = models.CharField(max_length=100, blank=True)
+    telefone = models.CharField(max_length=15, blank=True)
+    data_admissao = models.DateField()
 
     def __str__(self):
-        return self.username
+        return self.nome

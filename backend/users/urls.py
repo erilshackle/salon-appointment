@@ -1,16 +1,14 @@
 from django.urls import path
-from .views import RegisterView
-from .views import CustomTokenObtainPairView, register_user
-from rest_framework_simplejwt.views import TokenRefreshView
+from .views import RegisterFuncionarioView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('register/new', RegisterView.as_view(), name='register'),
-
-    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # Rota para registrar o funcionário
+    path('register/', RegisterFuncionarioView.as_view(), name='register_funcionario'),
+    
+    # Rota para obter o token JWT
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    
+    # Rota para obter um novo token JWT com o refresh token
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
-    path('register/', register_user, name='register_user'),
-    
-    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('register/', register_user, name='register_user'),
 ]
