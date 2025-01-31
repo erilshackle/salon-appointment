@@ -15,7 +15,7 @@ export default function LoginPage() {
     setError(""); // Limpa o erro antes de tentar novamente
 
     try {
-      const response = await api.post("/token/", {
+      const response = await api.post("/users/token/", {
         username, // Envia o username
         password, // Envia a senha
       });
