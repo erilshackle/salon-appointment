@@ -1,1 +1,0 @@
-[] Pagia criar servicos precisa resolver erro 400. talvez no ackend

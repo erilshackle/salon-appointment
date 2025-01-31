@@ -1,9 +1,6 @@
 # Agendamento Salão
 
 
-
-
-
 ##### Executar Projeto quick-start _once installed_
 ``` bash
 # Após ter o projeto instalado e protno:
@@ -12,12 +9,15 @@
 venv\Scripts\activate                   # ativar o ambiente virtual
 python manage.py runserver              # iniciar o backend (verifique a conexao com o database antes)
 
-# abrir um terminal para pasta frontend: http://localhost:3000
+# abrir um terminal para pasta frontend: 
 npm run dev                             # iniciar o frontend
 ```
 
+### Links
 
+frontend: http://localhost:3000
 
+backend: http://localhost:8000
 
 
 ### Clonando e rodando o repositorio __once cloned__
