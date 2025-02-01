@@ -15,6 +15,16 @@ export default function AgendarForm({
 
   const handleDataChange = (event) => {
     const dataSelecionada = event.target.value;
+    const hoje = new Date().toISOString().split('T')[0];
+    const maxData = new Date(new Date().setMonth(new Date().getMonth() + 1))
+      .toISOString()
+      .split('T')[0];
+  
+    if (dataSelecionada < hoje || dataSelecionada > maxData) {
+      alert("Selecione uma data entre hoje e o final do próximo mês!");
+      return;
+    }
+    
     setFormData({ ...formData, data: dataSelecionada });
     fetchHorarios(dataSelecionada); // Função permanece inalterada
   };
@@ -137,6 +147,10 @@ export default function AgendarForm({
           onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
           className="w-full p-3 border rounded-lg shadow-sm"
           required
+          min={new Date().toISOString().split('T')[0]}
+          max={new Date(new Date().setMonth(new Date().getMonth() + 1))
+            .toISOString()
+            .split('T')[0]} // Data máxima = último dia do próximo mês
         >
           <option value="">Selecione o horário</option>
           {horarios.map((horario) => {
