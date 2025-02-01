@@ -12,6 +12,14 @@ export default function AgendamentoForm({
 }) {
   const handleDataChange = (event) => {
     const dataSelecionada = event.target.value;
+
+    const hoje = new Date().toISOString().split('T')[0]; // Data de hoje no formato correto
+
+    if (dataSelecionada < hoje) {
+      alert("Selecione uma data futura!");
+      return;
+    }
+
     setFormData({ ...formData, data: dataSelecionada });
     fetchHorarios(dataSelecionada);  // Chama a função para obter os horários para a data selecionada
   };
@@ -104,6 +112,7 @@ export default function AgendamentoForm({
           onChange={handleDataChange}
           className="w-full p-3 border rounded-lg shadow-sm"
           required
+          min={new Date().toISOString().split('T')[0]} // Define o mínimo como a data de hoje
         />
       </div>
 
